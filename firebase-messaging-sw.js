@@ -19,10 +19,9 @@ function readFirebaseConfig() {
     };
   });
 }
-self.addEventListener('push', () => {});
 self.addEventListener('notificationclick', (event) => {
   event.notification.close();
-  const target = new URL('./', self.location.href).href;
+  const target = new URL(event.notification.data?.url || '../', self.location.href).href;
   event.waitUntil(self.clients.matchAll({type:'window', includeUncontrolled:true}).then((clients) => {
     for (const client of clients) {
       if ('focus' in client) return client.focus();
@@ -46,7 +45,7 @@ readFirebaseConfig().then((config) => {
       body: notification.body || payload.data?.body || 'Você recebeu uma nova mensagem.',
       icon: './icons/icone-ibne.png',
       badge: './icons/icone-ibne.png',
-      data: {url: payload.data?.url || './'}
+      data: {url: payload.data?.url || '../'}
     };
     return self.registration.showNotification(title, options);
   });
