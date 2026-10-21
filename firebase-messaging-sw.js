@@ -38,7 +38,7 @@ readFirebaseConfig().then((config) => {
   if (!config || !config.apiKey || !config.projectId || !config.messagingSenderId || !config.appId) return;
   if (!firebase.apps.length) firebase.initializeApp(config);
   const messaging = firebase.messaging();
-  messaging.onBackgroundMessage(async (payload) => {
+  messaging.onBackgroundMessage((payload) => {
     const notification = payload.notification || {};
     const title = notification.title || payload.data?.title || 'Escala de Mídia IBNE — Testes';
     const options = {
@@ -47,32 +47,6 @@ readFirebaseConfig().then((config) => {
       badge: './icons/icone-ibne.png',
       data: {url: payload.data?.url || '../'}
     };
-
-    // Primeiro exibe a notificação; só depois tenta confirmar o processamento.
-    await self.registration.showNotification(title, options);
-
-    // ACK apenas para diagnóstico de testes; nonce vincula a confirmação à tentativa.
-    if (payload.data?.tipo === 'ibne_push_diagnostico' &&
-        payload.data?.ambiente === 'testes' &&
-        payload.data?.ack_url && payload.data?.diagnostico_id && payload.data?.nonce) {
-      try {
-        const ack = new URL(payload.data.ack_url);
-        if (ack.protocol === 'https:' && ack.pathname.endsWith('/ack')) {
-          const response = await fetch(ack.href, {
-            method: 'POST',
-            headers: {'content-type': 'application/json'},
-            body: JSON.stringify({
-              diagnostico_id: payload.data.diagnostico_id,
-              nonce: payload.data.nonce
-            })
-          });
-          if (!response.ok) {
-            console.warn('IBNE Push: endpoint não confirmou o ACK; HTTP', response.status);
-          }
-        }
-      } catch (error) {
-        console.warn('IBNE Push: confirmação do diagnóstico não enviada; o recebimento não será presumido.', error);
-      }
-    }
+    return self.registration.showNotification(title, options);
   });
 }).catch((error) => console.error('IBNE Push: falha ao inicializar Firebase', error));
