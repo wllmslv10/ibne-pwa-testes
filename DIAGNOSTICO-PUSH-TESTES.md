@@ -12,13 +12,13 @@ No repositório `wllmslv10/ibne-pwa-testes`, abra **Settings → Secrets and var
 - `CLOUDFLARE_API_TOKEN`: token Cloudflare com permissão para publicar Workers.
 - `CLOUDFLARE_ACCOUNT_ID`: ID da conta Cloudflare.
 
-O segredo `PUSH_DIAGNOSTICO_ACK_URL) será adicionado depois de publicar o Worker, conforme a etapa 2.
+O segredo `PUSH_DIAGNOSTICO_ACK_URL` será adicionado depois de publicar o Worker, conforme a etapa 2.
 
 ## 2. Publicar o endpoint de confirmação
 
 No mesmo repositório, abra **Actions → Publicar confirmação Push — TESTES** e execute **Run workflow**. O workflow utiliza `IBNE_TEST_DATABASE_URL` para configurar a conexão segura do Worker com o banco de testes.
 
-O log informará a URL HTTPS do Worker. Copie-a e acrescente `/ack). Em seguida, cadastre o endereço completo como segredo `PUSH_DIAGNOSTICO_ACK_URL` no repositório `wllmslv10/ibne-pwa-testes`.
+O log informará a URL HTTPS do Worker. Copie-a e acrescente `/ack`. Em seguida, cadastre o endereço completo como segredo `PUSH_DIAGNOSTICO_ACK_URL` no repositório `wllmslv10/ibne-pwa-testes`.
 
 ## 3. Iniciar a primeira verificação
 
