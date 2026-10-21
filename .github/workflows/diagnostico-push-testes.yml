@@ -41,5 +41,6 @@ jobs:
           DATABASE_URL: ${{ secrets.IBNE_TEST_DATABASE_URL }}
           FIREBASE_SERVICE_ACCOUNT_JSON: ${{ secrets.IBNE_TEST_FIREBASE_SERVICE_ACCOUNT_JSON }}
           PUSH_DIAGNOSTICO_REGISTRO_IDS: ${{ secrets.PUSH_DIAGNOSTICO_REGISTRO_IDS }}
+          PUSH_DIAGNOSTICO_ACK_URL: ${{ secrets.PUSH_DIAGNOSTICO_ACK_URL }}
           IBNE_PUSH_DIAGNOSTICO_AMBIENTE: testes
         run: python app-teste/scripts/diagnostico_push_agendado.py
