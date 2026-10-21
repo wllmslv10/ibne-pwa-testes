@@ -13,9 +13,6 @@ Configure em **Settings → Secrets and variables → Actions**.
 - `CLOUDFLARE_API_TOKEN`: token Cloudflare com permissão para publicar Workers.
 - `CLOUDFLARE_ACCOUNT_ID`: ID da conta Cloudflare.
 
-### No repositório `wllmslv10/escala-midia-ibne`
-Configure também `IBNE_TEST_DATABASE_URL`, `IBNE_TEST_FIREBASE_SERVICE_ACCOUNT_JSON` e `PUSH_DIAGNOSTICO_REGISTRO_IDS`, pois o workflow de envio faz checkout do script desse repositório e lê os segredos do repositório que executa o workflow (`ibne-pwa-testes`). Portanto, para evitar duplicação de configuração, o workflow de envio deve ser executado no repositório da PWA de testes; os segredos usados pelo script são lidos de lá.
-
 ## Ordem de ativação
 1. Configure os segredos de banco de testes, Firebase de testes e IDs autorizados.
 2. Em **Actions → Publicar confirmação Push — TESTES**, execute manualmente o workflow. Ele publica o Worker `ibne-push-ack-testes) e mostra a URL `workers.dev` no log.
