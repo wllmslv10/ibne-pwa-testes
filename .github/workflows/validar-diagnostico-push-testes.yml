@@ -24,19 +24,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 22
-      - name: Baixar o script do aplicativo de testes
-        uses: actions/checkout@v4
-        with:
-          repository: wllmslv10/escala-midia-ibne
-          ref: visual/ibne-visual-1-0
-          path: app-teste
-      - name: Validar sintaxe Python
-        run: python -m py_compile app-teste/scripts/diagnostico_push_agendado.py
-      - name: Validar sintaxe Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: "3.12"
-      - name: Compilar script de diagnóstico
+      - name: Compilar script Python de diagnóstico
         run: python -m py_compile scripts/diagnostico_push_agendado.py
       - name: Validar sintaxe JavaScript
         run: |
