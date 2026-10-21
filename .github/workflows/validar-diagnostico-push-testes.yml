@@ -1,0 +1,37 @@
+name: Validar código do diagnóstico Push — TESTES
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'firebase-messaging-sw.js'
+      - 'ack-worker/**'
+      - '.github/workflows/**'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validar:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Baixar o script do aplicativo de testes
+        uses: actions/checkout@v4
+        with:
+          repository: wllmslv10/escala-midia-ibne
+          ref: visual/ibne-visual-1-0
+          path: app-teste
+      - name: Validar sintaxe Python
+        run: python -m py_compile app-teste/scripts/diagnostico_push_agendado.py
+      - name: Validar sintaxe JavaScript
+        run: |
+          node --check firebase-messaging-sw.js
+          node --check ack-worker/src/index.js
