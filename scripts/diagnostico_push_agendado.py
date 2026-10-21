@@ -16,7 +16,7 @@ from datetime import datetime, timezone
 import psycopg2
 from psycopg2.extras import RealDictCursor
 import firebase_admin
-from firebase_admin import credentials, messaging, exceptions
+from firebase_admin import credentials, messaging
 
 PROJECT_TESTE = "ibne-escala-midia-test"
 
@@ -144,7 +144,7 @@ def main():
                     detalhe="Firebase aceitou o envio; recebimento no celular ainda não foi confirmado."
                 )
                 print(f"Registro {device['id']}: Firebase aceitou; confirmação do aparelho pendente.")
-            except exceptions.UnregisteredError as exc:
+            except messaging.UnregisteredError as exc:
                 gravar_resultado(
                     conn, row_id=device["id"], funcionario_id=device["funcionario_id"],
                     device_id=device["device_id"], resultado="token_invalido_confirmado",
