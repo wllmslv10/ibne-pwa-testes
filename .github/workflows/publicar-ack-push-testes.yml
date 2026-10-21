@@ -2,10 +2,6 @@ name: Publicar confirmação Push — TESTES
 
 on:
   workflow_dispatch:
-  push:
-    paths:
-      - 'ack-worker/**'
-      - '.github/workflows/publicar-ack-push-testes.yml'
 
 permissions:
   contents: read
