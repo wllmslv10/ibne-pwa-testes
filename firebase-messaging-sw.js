@@ -47,24 +47,6 @@ readFirebaseConfig().then((config) => {
       badge: './icons/icone-ibne.png',
       data: {url: payload.data?.url || '../'}
     };
-    return self.registration.showNotification(title, options).then(async () => {
-      const data = payload.data || {};
-      if (data.tipo === 'ibne_push_diagnostico' &&
-          data.ambiente === 'testes' &&
-          data.attempt_id &&
-          typeof data.ack_url === 'string' &&
-          data.ack_url.startsWith('https://')) {
-        try {
-          await fetch(data.ack_url, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ attempt_id: data.attempt_id }),
-            cache: 'no-store'
-          });
-        } catch (error) {
-          console.error('IBNE Push teste: não foi possível enviar confirmação.', error);
-        }
-      }
-    });
+    return self.registration.showNotification(title, options);
   });
 }).catch((error) => console.error('IBNE Push: falha ao inicializar Firebase', error));
