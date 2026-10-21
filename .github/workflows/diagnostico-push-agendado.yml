@@ -32,7 +32,7 @@ jobs:
         run: |
           if [[ -z "$DATABASE_URL" || -z "$FIREBASE_SERVICE_ACCOUNT_JSON" || -z "$PUSH_DIAGNOSTICO_REGISTRO_IDS" || -z "$PUSH_DIAGNOSTICO_ACK_URL" ]]; then
             echo "ready=false" >> "$GITHUB_OUTPUT"
-            echo "::notice::Agendamento em espera: configure os três segredos documentados; nenhum Push foi enviado."
+            echo "::notice::Agendamento em espera: configure os quatro segredos documentados; nenhum Push foi enviado."
           else
             echo "ready=true" >> "$GITHUB_OUTPUT"
           fi
