@@ -21,15 +21,33 @@ jobs:
       - name: Baixar PWA de testes
         uses: actions/checkout@v4
 
+      - name: Verificar configuração sem revelar segredos
+        id: config
+        env:
+          DATABASE_URL: ${{ secrets.IBNE_TEST_DATABASE_URL }}
+          FIREBASE_SERVICE_ACCOUNT_JSON: ${{ secrets.IBNE_TEST_FIREBASE_SERVICE_ACCOUNT_JSON }}
+          PUSH_DIAGNOSTICO_REGISTRO_IDS: ${{ secrets.PUSH_DIAGNOSTICO_REGISTRO_IDS }}
+        shell: bash
+        run: |
+          if [[ -z "$DATABASE_URL" || -z "$FIREBASE_SERVICE_ACCOUNT_JSON" || -z "$PUSH_DIAGNOSTICO_REGISTRO_IDS" ]]; then
+            echo "ready=false" >> "$GITHUB_OUTPUT"
+            echo "::notice::Agendamento em espera: configure os três segredos documentados; nenhum Push foi enviado."
+          else
+            echo "ready=true" >> "$GITHUB_OUTPUT"
+          fi
+
       - name: Preparar Python
+        if: steps.config.outputs.ready == 'true'
         uses: actions/setup-python@v5
         with:
           python-version: "3.12"
 
       - name: Instalar dependências
+        if: steps.config.outputs.ready == 'true'
         run: python -m pip install --disable-pip-version-check psycopg2-binary firebase-admin
 
       - name: Enviar Pushs de diagnóstico autorizados
+        if: steps.config.outputs.ready == 'true'
         env:
           IBNE_PUSH_DIAGNOSTICO_AMBIENTE: testes
           DATABASE_URL: ${{ secrets.IBNE_TEST_DATABASE_URL }}
