@@ -80,9 +80,13 @@ def registrar(conn, row_id, funcionario_id, device_id, resultado, *,
     with conn.cursor() as cur:
         cur.execute("""
             UPDATE diagnostico_push_agendado
-               SET resultado=%s, firebase_message_id=%s, codigo_erro=%s, detalhe=%s
+               SET resultado=CASE
+                     WHEN resultado='confirmado_no_aparelho'
+                          AND %s='firebase_aceitou_confirmacao_pendente'
+                     THEN resultado ELSE %s END,
+                   firebase_message_id=%s, codigo_erro=%s, detalhe=%s
              WHERE id=%s AND ack_nonce=%s
-        """, (resultado, message_id, codigo_erro, (detalhe or "")[:500], diagnostico_id, ack_nonce))
+        """, (resultado, resultado, message_id, codigo_erro, (detalhe or "")[:500], diagnostico_id, ack_nonce))
     conn.commit()
 
 
