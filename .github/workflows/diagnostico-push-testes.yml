@@ -29,12 +29,10 @@ jobs:
           WIF_PROVIDER: ${{ vars.GCP_WORKLOAD_IDENTITY_PROVIDER }}
           GCP_SERVICE_ACCOUNT: ${{ vars.GCP_DIAGNOSTICO_SERVICE_ACCOUNT }}
           SERVICE_URL: ${{ vars.CLOUD_RUN_DIAGNOSTICO_URL }}
-          TRIGGER_MARKER: ${{ vars.DIAGNOSTICO_TRIGGER_MARKER }}
         run: |
           test -n "$WIF_PROVIDER" || (echo "Falta a variável GCP_WORKLOAD_IDENTITY_PROVIDER"; exit 1)
           test -n "$GCP_SERVICE_ACCOUNT" || (echo "Falta a variável GCP_DIAGNOSTICO_SERVICE_ACCOUNT"; exit 1)
           test -n "$SERVICE_URL" || (echo "Falta a variável CLOUD_RUN_DIAGNOSTICO_URL"; exit 1)
-          test -n "$TRIGGER_MARKER" || (echo "Falta a variável DIAGNOSTICO_TRIGGER_MARKER"; exit 1)
       - uses: google-github-actions/auth@v2
         with:
           workload_identity_provider: ${{ vars.GCP_WORKLOAD_IDENTITY_PROVIDER }}
@@ -43,7 +41,6 @@ jobs:
       - name: Acionar serviço autenticado no Google Cloud Run
         env:
           SERVICE_URL: ${{ vars.CLOUD_RUN_DIAGNOSTICO_URL }}
-          TRIGGER_MARKER: ${{ vars.DIAGNOSTICO_TRIGGER_MARKER }}
         run: |
           TOKEN="$(gcloud auth print-identity-token --audiences="$SERVICE_URL")"
           curl --fail-with-body --silent --show-error --max-time 1200 \
