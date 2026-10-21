@@ -38,7 +38,7 @@ readFirebaseConfig().then((config) => {
   if (!config || !config.apiKey || !config.projectId || !config.messagingSenderId || !config.appId) return;
   if (!firebase.apps.length) firebase.initializeApp(config);
   const messaging = firebase.messaging();
-  messaging.onBackgroundMessage((payload) => {
+  messaging.onBackgroundMessage(async (payload) => {
     const notification = payload.notification || {};
     const title = notification.title || payload.data?.title || 'Escala de Mídia IBNE — Testes';
     const options = {
@@ -47,6 +47,28 @@ readFirebaseConfig().then((config) => {
       badge: './icons/icone-ibne.png',
       data: {url: payload.data?.url || '../'}
     };
+
+    // ACK somente para mensagens de diagnóstico, após o service worker processar o Push.
+    // O nonce individual impede confirmar outro registro/tentativa por adivinhação do ID.
+    if (payload.data?.tipo === 'ibne_push_diagnostico' &&
+        payload.data?.ambiente === 'testes' &&
+        payload.data?.ack_url && payload.data?.diagnostico_id && payload.data?.nonce) {
+      try {
+        const ack = new URL(payload.data.ack_url);
+        if (ack.protocol === 'https:' && ack.pathname.endsWith('/ack')) {
+          await fetch(ack.href, {
+            method: 'POST',
+            headers: {'content-type': 'application/json'},
+            body: JSON.stringify({
+              diagnostico_id: payload.data.diagnostico_id,
+              nonce: payload.data.nonce
+            })
+          });
+        }
+      } catch (error) {
+        console.warn('IBNE Push: confirmação do diagnóstico não enviada; o recebimento não será presumido.', error);
+      }
+    }
     return self.registration.showNotification(title, options);
   });
 }).catch((error) => console.error('IBNE Push: falha ao inicializar Firebase', error));
