@@ -59,9 +59,6 @@ def health():
 def run():
     if os.environ.get("IBNE_PUSH_DIAGNOSTICO_AMBIENTE") != "testes":
         return jsonify(erro="Ambiente bloqueado"), 403
-    marker = os.environ.get("DIAGNOSTICO_TRIGGER_MARKER", "")
-    if not marker or request.headers.get("X-IBNE-Diagnostico") != marker:
-        return jsonify(erro="Origem não autorizada"), 403
     ids_raw = os.environ.get("PUSH_DIAGNOSTICO_REGISTRO_IDS", "")
     try:
         ids = sorted({int(v.strip()) for v in ids_raw.split(",") if v.strip()})
