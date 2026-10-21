@@ -48,15 +48,17 @@ readFirebaseConfig().then((config) => {
       data: {url: payload.data?.url || '../'}
     };
 
-    // ACK somente para mensagens de diagnóstico, após o service worker processar o Push.
-    // O nonce individual impede confirmar outro registro/tentativa por adivinhação do ID.
+    // Primeiro exibe a notificação; só depois tenta confirmar o processamento.
+    await self.registration.showNotification(title, options);
+
+    // ACK apenas para diagnóstico de testes; nonce vincula a confirmação à tentativa.
     if (payload.data?.tipo === 'ibne_push_diagnostico' &&
         payload.data?.ambiente === 'testes' &&
         payload.data?.ack_url && payload.data?.diagnostico_id && payload.data?.nonce) {
       try {
         const ack = new URL(payload.data.ack_url);
         if (ack.protocol === 'https:' && ack.pathname.endsWith('/ack')) {
-          await fetch(ack.href, {
+          const response = await fetch(ack.href, {
             method: 'POST',
             headers: {'content-type': 'application/json'},
             body: JSON.stringify({
@@ -64,11 +66,13 @@ readFirebaseConfig().then((config) => {
               nonce: payload.data.nonce
             })
           });
+          if (!response.ok) {
+            console.warn('IBNE Push: endpoint não confirmou o ACK; HTTP', response.status);
+          }
         }
       } catch (error) {
         console.warn('IBNE Push: confirmação do diagnóstico não enviada; o recebimento não será presumido.', error);
       }
     }
-    return self.registration.showNotification(title, options);
   });
 }).catch((error) => console.error('IBNE Push: falha ao inicializar Firebase', error));
