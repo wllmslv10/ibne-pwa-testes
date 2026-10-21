@@ -46,6 +46,5 @@ jobs:
           curl --fail-with-body --silent --show-error --max-time 1200 \
             -X POST "$SERVICE_URL/diagnostico" \
             -H "Authorization: Bearer $TOKEN" \
-            -H "X-IBNE-Diagnostico: $TRIGGER_MARKER" \
             -H "Content-Type: application/json" \
             --data '{"ambiente":"testes"}'
