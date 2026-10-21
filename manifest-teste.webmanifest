@@ -1,0 +1,21 @@
+{
+  "id": "./?ambiente=testes&modo=faixa",
+  "name": "Escala de Mídia IBNE — Testes visuais",
+  "short_name": "IBNE Testes",
+  "description": "Versão de testes visuais do aplicativo IBNE.",
+  "lang": "pt-BR",
+  "start_url": "./index.html?teste-faixa=1",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#123e70",
+  "theme_color": "#123e70",
+  "icons": [
+    {
+      "src": "./icons/icone-ibne-app-v3.svg?v=13",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

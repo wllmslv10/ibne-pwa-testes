@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#123e70">
+  <meta name="description" content="Acesso rápido à Escala de Mídia da Igreja Batista Nova Esperança.">
+  <link rel="manifest" href="./manifest.webmanifest">
+  <link rel="icon" href="./icons/icone-ibne-app-v3.svg?v=13" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="./icons/icone-ibne.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="IBNE Testes">
+  <title>Escala de Mídia IBNE — Testes</title>
+  <script>
+    // O acesso normal continua abrindo diretamente o aplicativo oficial.
+    // ?instalar=1 exibe a página de instalação; ?teste-faixa=1 é um teste isolado
+    // para avaliar o app dentro da janela PWA sem navegação fora do escopo.
+    const pwaParams = new URLSearchParams(window.location.search);
+    if (pwaParams.has('teste-faixa')) {
+      document.documentElement.classList.add('teste-embed');
+      document.querySelector('link[rel="manifest"]').href = './manifest-teste.webmanifest';
+    } else if (!pwaParams.has('instalar')) {
+      window.location.replace('https://ibne-escala-midia-teste.streamlit.app/');
+    }
+  </script>
+  <style>
+    :root { color-scheme: dark; --navy:#123e70; --navy2:#1b518b; --gold:#e8bd62; --text:#f5f7fb; --muted:#c5d2e1; }
+    * { box-sizing:border-box; }
+    html { min-height:100%; background-color:#123e70; }
+    body { margin:0; min-height:100svh; font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif; color:var(--text); background-color:#123e70; background-image:radial-gradient(ellipse at top,#234b74 0,var(--navy) 58%); display:grid; place-items:center; padding:24px; }
+    main { width:min(100%,480px); text-align:center; padding:32px 24px; border:1px solid #ffffff24; border-radius:28px; background:#08192a70; box-shadow:0 18px 60px #0003; }
+    .logo { width:100px; height:100px; margin:0 auto 18px; display:block; border-radius:50%; clip-path:circle(50%); object-fit:cover; }
+    .eyebrow { color:var(--gold); letter-spacing:.13em; font-weight:750; font-size:.78rem; text-transform:uppercase; }
+    h1 { margin:10px 0 8px; font-size:clamp(1.7rem,6vw,2.2rem); line-height:1.15; }
+    p { color:var(--muted); line-height:1.6; margin:12px 0 24px; }
+    .button { display:flex; justify-content:center; align-items:center; width:100%; min-height:54px; border-radius:14px; text-decoration:none; font-weight:750; padding:14px 18px; margin-top:12px; }
+    .primary { background:var(--gold); color:#15243a; }
+    .secondary { border:1px solid #ffffff45; color:var(--text); background:#ffffff08; cursor:pointer; }
+    .hint { font-size:.88rem; margin-top:22px; margin-bottom:0; }
+    footer { margin-top:22px; color:#9fb1c5; font-size:.78rem; }
+    @media (prefers-reduced-motion:no-preference) { main { animation:appear .45s ease-out; } @keyframes appear { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:translateY(0); } } }
+    /* Modo experimental, ativado somente por ?teste-faixa=1. */
+    html.teste-embed, html.teste-embed body { width:100%; height:100%; min-height:100%; margin:0; padding:0; overflow:hidden; background:#123e70; display:block; }
+    html.teste-embed body > main { display:none; }
+    html.teste-embed body > iframe.ibne-app-test { display:block; position:fixed; inset:0; width:100%; height:100%; border:0; margin:0; padding:0; background:#123e70; }
+  </style>
+</head>
+<body>
+  <main>
+    <img class="logo" src="./icons/icone-ibne-app-v3.svg?v=13" alt="Logotipo da Igreja Batista Nova Esperança">
+    <div class="eyebrow">Igreja Batista Nova Esperança</div>
+    <h1>Escala de Mídia IBNE</h1>
+    <p>Um acesso rápido à escala da equipe de mídia da igreja.</p>
+    <a class="button primary" href="https://ibne-escala-midia-teste.streamlit.app/" target="_blank" rel="noopener noreferrer">Abrir aplicativo de testes</a>
+    <button class="button secondary" id="install" hidden>Instalar no dispositivo</button>
+    <p class="hint" id="install-hint">A instalação pode ser feita no celular ou computador, dependendo do navegador. Se o botão não aparecer, abra o menu do navegador e procure “Instalar aplicativo” ou “Adicionar à tela inicial”.</p>
+    <footer>As opções de instalação variam conforme o dispositivo e o navegador.</footer>
+  </main>
+  <script>
+    if (new URLSearchParams(window.location.search).has('teste-faixa')) {
+      const appFrame = document.createElement('iframe');
+      appFrame.className = 'ibne-app-test';
+      appFrame.title = 'Aplicativo de testes Escala de Mídia IBNE';
+      appFrame.src = 'https://ibne-escala-midia-teste.streamlit.app/?embed=true';
+      appFrame.allow = 'clipboard-read; clipboard-write; fullscreen';
+      document.body.appendChild(appFrame);
+    }
+    let installPrompt;
+    const installButton = document.getElementById('install');
+    window.addEventListener('beforeinstallprompt', (event) => {
+      event.preventDefault();
+      installPrompt = event;
+      installButton.hidden = false;
+    });
+    installButton.addEventListener('click', async () => {
+      if (!installPrompt) return;
+      installPrompt.prompt();
+      await installPrompt.userChoice;
+      installPrompt = null;
+      installButton.hidden = true;
+    });
+    if ('serviceWorker' in navigator && location.protocol.startsWith('http')) {
+      window.addEventListener('load', () => navigator.serviceWorker.register('./sw.js').catch(() => {}));
+    }
+  </script>
+</body>
+</html>

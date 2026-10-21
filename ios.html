@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#123e70">
+  <meta name="description" content="Instale a Escala de Mídia IBNE na tela inicial do iPhone.">
+  <link rel="icon" href="./icons/icone-ibne-app-v3.svg?v=13" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="./icons/icone-ibne.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="IBNE Testes">
+  <title>Instalar no iPhone — IBNE Testes</title>
+  <style>
+    :root { color-scheme: dark; --navy:#123e70; --gold:#e8bd62; --text:#f5f7fb; --muted:#d1dceb; }
+    * { box-sizing:border-box; }
+    html { min-height:100%; background:#123e70; }
+    body { margin:0; min-height:100svh; font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif; color:var(--text); background:radial-gradient(ellipse at top,#234b74 0,var(--navy) 58%); padding:22px 16px calc(28px + env(safe-area-inset-bottom)); }
+    main { width:min(100%,520px); margin:0 auto; padding:28px 22px; border:1px solid #ffffff24; border-radius:26px; background:#08192a70; box-shadow:0 18px 60px #0003; }
+    .logo { display:block; width:88px; height:88px; object-fit:cover; border-radius:50%; clip-path:circle(50%); margin:0 auto 16px; }
+    .eyebrow { color:var(--gold); text-align:center; letter-spacing:.11em; font-weight:750; font-size:.76rem; text-transform:uppercase; }
+    h1 { text-align:center; font-size:clamp(1.65rem,6vw,2.1rem); line-height:1.15; margin:10px 0; }
+    .intro { text-align:center; color:var(--muted); line-height:1.6; margin:0 0 22px; }
+    .step { display:grid; grid-template-columns:38px 1fr; gap:12px; align-items:start; padding:14px 0; border-top:1px solid #ffffff20; }
+    .number { width:34px; height:34px; display:grid; place-items:center; border-radius:50%; background:var(--gold); color:#15243a; font-weight:800; }
+    h2 { font-size:1rem; margin:2px 0 5px; }
+    .step p { color:var(--muted); line-height:1.55; margin:0; font-size:.94rem; }
+    .share-icon { display:inline-grid; place-items:center; border:1px solid #ffffff70; border-radius:7px; padding:0 7px; font-size:1.1rem; margin:0 2px; }
+    .button { display:flex; justify-content:center; align-items:center; width:100%; min-height:52px; border-radius:14px; text-decoration:none; text-align:center; font-weight:750; padding:13px 16px; margin-top:12px; }
+    .primary { background:var(--gold); color:#15243a; }
+    .secondary { border:1px solid #ffffff45; color:var(--text); background:#ffffff08; }
+    .notice { margin:18px 0 0; padding:12px 14px; border-radius:12px; background:#ffffff0d; color:#dbe6f2; font-size:.86rem; line-height:1.55; }
+    #device-note { text-align:center; color:var(--gold); font-size:.9rem; margin:0 0 16px; }
+    footer { text-align:center; color:#aebfd2; font-size:.77rem; margin-top:22px; line-height:1.5; }
+  </style>
+</head>
+<body>
+  <main>
+    <img class="logo" src="./icons/icone-ibne-app-v3.svg?v=13" alt="Logotipo da Igreja Batista Nova Esperança">
+    <div class="eyebrow">Igreja Batista Nova Esperança</div>
+    <h1>Instalar no iPhone</h1>
+    <p class="intro">Tenha a <strong>Escala de Mídia IBNE</strong> na tela inicial do seu iPhone, como um aplicativo.</p>
+    <p id="device-note" aria-live="polite"></p>
+
+    <section class="step">
+      <div class="number">1</div>
+      <div>
+        <h2>Abra esta página no Safari</h2>
+        <p>Para instalar, use o navegador Safari do iPhone. Se esta página abriu em outro aplicativo, abra o menu de compartilhamento e escolha abrir no Safari.</p>
+      </div>
+    </section>
+    <section class="step">
+      <div class="number">2</div>
+      <div>
+        <h2>Toque em Compartilhar</h2>
+        <p>No Safari, toque no botão de compartilhamento <span class="share-icon" aria-label="símbolo de compartilhar">□↑</span>. Se não estiver visível, role as opções do menu.</p>
+      </div>
+    </section>
+    <section class="step">
+      <div class="number">3</div>
+      <div>
+        <h2>Escolha “Adicionar à Tela de Início”</h2>
+        <p>Se a opção não aparecer de imediato, role a lista para baixo. Na tela seguinte, confirme o nome <strong>Escala IBNE</strong>. Se aparecer “Abrir como App da Web”, deixe ativado.</p>
+      </div>
+    </section>
+    <section class="step">
+      <div class="number">4</div>
+      <div>
+        <h2>Toque em “Adicionar”</h2>
+        <p>O ícone aparecerá na tela inicial. Depois, toque nele para abrir a Escala de Mídia IBNE.</p>
+      </div>
+    </section>
+
+    <a class="button primary" href="https://ibne-escala-midia-teste.streamlit.app/">Abrir aplicativo de testes</a>
+    <a class="button secondary" href="./?instalar=1">Voltar ao instalador geral</a>
+
+    <p class="notice"><strong>Importante:</strong> por segurança, o iPhone exige que você confirme a adição à tela inicial. Esta página orienta o processo, mas não consegue concluir a instalação sozinha. A aparência das opções pode variar conforme a versão do iOS.</p>
+    <footer>Escala de Mídia IBNE · Igreja Batista Nova Esperança</footer>
+  </main>
+  <script>
+    (() => {
+      const ua = navigator.userAgent || "";
+      const isAppleMobile = /iPhone|iPad|iPod/i.test(ua) ||
+        (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+      const isStandalone = window.matchMedia("(display-mode: standalone)").matches ||
+        window.navigator.standalone === true;
+      const note = document.getElementById("device-note");
+      if (isStandalone) {
+        note.textContent = "Você já abriu a Escala IBNE pela tela inicial do dispositivo.";
+      } else if (isAppleMobile) {
+        note.textContent = "Seu dispositivo parece ser um iPhone ou iPad. Siga os passos abaixo.";
+      } else {
+        note.textContent = "Esta página é destinada ao iPhone e iPad. No iPhone, abra este endereço no Safari.";
+      }
+    })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <rect width="512" height="512" rx="112" fill="#102744"/>
+  <rect x="72" y="82" width="368" height="252" rx="30" fill="#173b62" stroke="#e8bd62" stroke-width="16"/>
+  <path d="M220 145 L220 271 L326 208 Z" fill="#e8bd62"/>
+  <path d="M160 374 H352" stroke="#e8bd62" stroke-width="18" stroke-linecap="round"/>
+  <text x="256" y="448" text-anchor="middle" font-family="Arial,sans-serif" font-size="58" font-weight="700" fill="#f5f7fb">IBNE</text>
+</svg>
