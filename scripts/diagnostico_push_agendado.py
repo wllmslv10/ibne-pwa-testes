@@ -23,7 +23,7 @@ def exigir_configuracao():
     ack_url = os.getenv("PUSH_DIAGNOSTICO_ACK_URL", "").strip().rstrip("/")
     if not all((db_url, cred_json, ids_raw, ack_url)):
         raise RuntimeError("Faltam segredos obrigatórios. Nenhum Push enviado.")
-    if not ack_url.startswith("https://") or "/ack" not in ack_url:
+    if not ack_url.startswith("https://") or not ack_url.endswith("/ack"):
         raise RuntimeError("PUSH_DIAGNOSTICO_ACK_URL deve ser endpoint HTTPS terminado em /ack.")
     try:
         ids = sorted({int(x.strip()) for x in ids_raw.split(",") if x.strip()})
