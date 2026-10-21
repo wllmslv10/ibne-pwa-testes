@@ -12,10 +12,8 @@ O fluxo está preparado para enviar notificações reais às **10h, 15h e 20h (h
 ## Endpoint de confirmação (ACK)
 
 O código fica em `ack-worker/`. Para publicar:
-- Crie um Cloudflare Worker chamado `ibne-push-ack-testes`.
-- No Cloudflare, defina o segredo do Worker `DATABASE_URL` com a URL do **banco de testes** (Settings/Variables and Secrets).
-- No GitHub do repositório `ibne-pwa-testes), configure os segredos `CLOUDFLARE_API_TOKEN` e `CLOUDFLARE_ACCOUNT_ID`.
-- Execute Actions → **Publicar endpoint ACK do Push de testes** → Run workflow.
+- No GitHub do repositório `ibne-pwa-testes`, configure os segredos `CLOUDFLARE_API_TOKEN`, `CLOUDFLARE_ACCOUNT_ID` e `IBNE_TEST_DATABASE_URL`. O último deve apontar exclusivamente para o banco de testes.
+- Execute Actions → **Publicar endpoint ACK do Push de testes** → Run workflow. O workflow publica o Worker e configura nele o segredo criptografado `DATABASE_URL`, sem imprimir seu valor nos logs.
 - Copie a URL HTTPS pública do Worker, acrescentando `/ack`. Ela será o segredo `PUSH_DIAGNOSTICO_ACK_URL`.
 
 O endpoint só aceita POST de origem `https://wllmslv10.github.io`, exige ID de tentativa e nonce aleatório exclusivo, e atualiza somente a linha cujo nonce corresponde. Ele não recebe nem registra o token FCM. A confirmação significa que o service worker de testes processou a mensagem e conseguiu chamar o endpoint; não é uma confirmação de leitura humana.
