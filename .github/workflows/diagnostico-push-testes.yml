@@ -1,0 +1,42 @@
+name: Diagnóstico Push automático — TESTES
+
+on:
+  schedule:
+    # Horários UTC; equivalem a horários variados de Brasília (UTC-3).
+    - cron: "0 12,17,22 * * 1"
+    - cron: "0 13,18,23 * * 2"
+    - cron: "0 11,16,21 * * 3"
+    - cron: "0 12,17,22 * * 4"
+    - cron: "30 12,17,22 * * 5"
+    - cron: "0 13,18,23 * * 6"
+    - cron: "30 11,16,21 * * 0"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: diagnostico-push-testes
+  cancel-in-progress: false
+
+jobs:
+  diagnostico:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Instalar dependências
+        run: python -m pip install "psycopg2-binary>=2.9,<3" "firebase-admin>=6,<8"
+      - name: Validar script
+        run: python -m py_compile scripts/diagnostico_push_agendado.py
+      - name: Executar diagnóstico exclusivo de testes
+        env:
+          DATABASE_URL: ${{ secrets.IBNE_TEST_DATABASE_URL }}
+          FIREBASE_SERVICE_ACCOUNT_JSON: ${{ secrets.IBNE_TEST_FIREBASE_SERVICE_ACCOUNT_JSON }}
+          PUSH_DIAGNOSTICO_REGISTRO_IDS: ${{ secrets.PUSH_DIAGNOSTICO_REGISTRO_IDS }}
+          PUSH_DIAGNOSTICO_ACK_URL: ${{ secrets.PUSH_DIAGNOSTICO_ACK_URL }}
+          IBNE_PUSH_DIAGNOSTICO_AMBIENTE: testes
+        run: python scripts/diagnostico_push_agendado.py
